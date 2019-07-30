@@ -1,0 +1,20 @@
+#!/bin/bash
+# simple script to help reduce clicks needed to create a pull request
+# just run it anywhere within the git repo dir
+#
+
+
+git push
+
+repo=`git remote -v | grep -m 1 "(push)" | sed -e "s/.*.com[:/]\(.*\)\.git.*/\1/"`
+branch=`git name-rev --name-only HEAD`
+url=https://github.com/$repo/pull/new/$branch
+echo "... creating pull request for branch \"$branch\" in \"$repo\" with \"$url\""
+
+if [ `uname` = 'Linux' ]; then
+ cmd=xdg-open
+else
+ cmd=open
+fi
+
+$cmd $url
